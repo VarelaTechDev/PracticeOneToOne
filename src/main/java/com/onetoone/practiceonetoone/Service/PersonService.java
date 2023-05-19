@@ -8,13 +8,21 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+import com.onetoone.practiceonetoone.Entity.Person;
+import com.onetoone.practiceonetoone.Repository.PersonRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class PersonService {
 
-    private final PersonRepository personRepository;
+    private PersonRepository personRepository;
 
     @Autowired
-    public PersonService(PersonRepository personRepository) {
+    public void setPersonRepository(PersonRepository personRepository) {
         this.personRepository = personRepository;
     }
 
@@ -49,4 +57,5 @@ public class PersonService {
         personRepository.deleteById(id);
     }
 }
+
 

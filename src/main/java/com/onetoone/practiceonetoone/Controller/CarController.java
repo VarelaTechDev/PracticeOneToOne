@@ -23,12 +23,6 @@ public class CarController {
         this.carRepository = carRepository;
     }
 
-//    @GetMapping("/{id}")
-//    public ResponseEntity<?> getCar(@PathVariable Long id) {
-//        return carRepository.findById(id)
-//                .map(ResponseEntity::ok)
-//                .orElse(ResponseEntity.notFound().build());
-//    }
     @GetMapping("/{id}")
     public ResponseEntity<?> getCar(@PathVariable Long id) {
         Optional<Car> optionalCar = carRepository.findById(id);
@@ -69,17 +63,18 @@ public class CarController {
 
     @PutMapping("/{id}")
     public Car updateCar(@PathVariable Long id, @RequestBody Car newCar) {
-        return carRepository.findById(id)
-                .map(existingCar -> {
-                    existingCar.setMake(newCar.getMake());
-                    existingCar.setModel(newCar.getModel());
-                    existingCar.setColor(newCar.getColor());
-                    return carRepository.save(existingCar);
-                })
-                .orElseGet(() -> {
-                    newCar.setId(id);
-                    return carRepository.save(newCar);
-                });
+        Optional<Car> optionalCar = carRepository.findById(id);
+
+        if (optionalCar.isPresent()) {
+            Car existingCar = optionalCar.get();
+            existingCar.setMake(newCar.getMake());
+            existingCar.setModel(newCar.getModel());
+            existingCar.setColor(newCar.getColor());
+            return carRepository.save(existingCar);
+        } else {
+            newCar.setId(id);
+            return carRepository.save(newCar);
+        }
     }
 
     @DeleteMapping("/{id}")

@@ -26,7 +26,7 @@ public class PersonController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getPerson(@PathVariable Long id) {
         if (id < 0) {
-            throw new BadRequestException(id + " cannot be invalid");
+            throw new BadRequestException(id + " is null and void");
         }
 
         Optional<Person> optionalPerson = personService.getPersonById(id);
